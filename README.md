@@ -7,17 +7,53 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Docker Images to Deploy Laravel Project
+ 
+ This repository provides you a development environment without requiring you to install PHP, a web server, and any other server software on your local machine. For this, it requires Docker and Docker Compose.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Installation
+Install docker and docker-compose ;
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Go to the project root path, and edit it according to your needs ;
+
+From your project directory, start up your application by running:
+
+
+1.cp .env.example .env
+Setting up the environment variables for Laravel
+
+2.nano .env
+We need to update the DB_HOST variable so that it points to the database service we will create in our Docker environment. In this guide, we’ll call our database service db. Go ahead and replace the listed value of DB_HOST with the database service name
+
+3.docker-compose -f docker-compose.yaml up -d
+Starting up the docker
+
+4.docker-compose ps
+List the docker services 
+
+5.Through docker you can run composer or artisan through docker:
+
+5a.docker-compose exec -T laravel-divido-config-app composer install
+To install the application dependencies for Laravel 
+
+5b.docker-compose exec -T  laravel-divido-config-app php artisan key:generate
+To generate a unique application key with the artisan Laravel command-line tool. This key is used to encrypt user sessions and other sensitive data
+
+5c.docker-compose exec -T laravel-divido-config-app php artisan migrate
+To run the Laravel migration command that creates the tables
+
+5d.docker-compose exec -T laravel-divido-config-app php artisan:storage:link
+To create the symbolic links configured for the application.
+
+5e.docker-compose exec -T laravel-divido-config-app php artisan config:cache
+To clear config cache
+
+
+
+To confirm that the Laravel app has been deployed and is running, visit your server’s public IP inside your browser (http://your_server_public_ip)
+
+6.docker-compose exec laravel-divido-config-app down
+To shut down your Docker Compose environment and remove all of its containers, networks, and volumes.
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
@@ -26,23 +62,6 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
 If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
 
 ## Contributing
 
