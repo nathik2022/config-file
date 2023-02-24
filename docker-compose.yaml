@@ -1,0 +1,69 @@
+version: '3.8'
+services:
+  laravel-divido-config-app:
+    build: 
+      args:
+        user: sammy
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: nathik81/laravel-divido-config-app:1.0
+    container_name: laravel-divido-config-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - laravel-divido-config-app-network
+
+  db:
+    image: mysql:5.7.40
+    container_name: laravel-divido-config-app-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    networks:
+      - laravel-divido-config-app-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: laravel-divido-config-app-nginx
+    restart: unless-stopped
+    ports:
+      - 8100:80
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf:/etc/nginx/conf.d/
+    networks:
+      - laravel-divido-config-app-network
+    depends_on:
+      - laravel-divido-config-app
+
+  phpmyadmin:
+      image: phpmyadmin:5.1.0-apache
+      container_name: phpmyadmin
+      restart: unless-stopped
+      ports:
+        - 8200:80
+      environment:
+        PMA_HOST: db
+        PMA_PORT: 3306
+        MYSQL_USERNAME: ${DB_USERNAME}
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      depends_on:
+        - db
+      networks:
+        - laravel-divido-config-app-network
+
+networks:
+  laravel-divido-config-app-network:
+    driver: bridge
+
+
