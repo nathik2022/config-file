@@ -19,33 +19,42 @@ Go to the project root path, and edit it according to your needs ;
 From your project directory, start up your application by running:
 
 
-1.cp .env.example .env
+# 1.cp .env.example .env
+
 Setting up the environment variables for Laravel
 
-2.nano .env
+# 2.nano .env
+
 We need to update the DB_HOST variable so that it points to the database service we will create in our Docker environment. In this guide, we’ll call our database service db. Go ahead and replace the listed value of DB_HOST with the database service name
 
 3.docker-compose -f docker-compose.yaml up -d
+
 Starting up the docker
 
 4.docker-compose ps
+
 List the docker services 
 
 5.Through docker you can run composer or artisan through docker:
 
 5a.docker-compose exec -T laravel-divido-config-app composer install
+
 To install the application dependencies for Laravel 
 
 5b.docker-compose exec -T  laravel-divido-config-app php artisan key:generate
+
 To generate a unique application key with the artisan Laravel command-line tool. This key is used to encrypt user sessions and other sensitive data
 
 5c.docker-compose exec -T laravel-divido-config-app php artisan migrate
+
 To run the Laravel migration command that creates the tables
 
 5d.docker-compose exec -T laravel-divido-config-app php artisan:storage:link
+
 To create the symbolic links configured for the application.
 
 5e.docker-compose exec -T laravel-divido-config-app php artisan config:cache
+
 To clear config cache
 
 
@@ -53,6 +62,7 @@ To clear config cache
 To confirm that the Laravel app has been deployed and is running, visit your server’s public IP inside your browser (http://your_server_public_ip)
 
 6.docker-compose exec laravel-divido-config-app down
+
 To shut down your Docker Compose environment and remove all of its containers, networks, and volumes.
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
